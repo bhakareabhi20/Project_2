@@ -1,0 +1,68 @@
+/*****************************KnapScap 0/1 Problem Using Dyanamic_programing*********************************************/
+
+import java.util.Scanner;
+
+public class KnapsackDynamicProgramming {
+    public static int knapsack(int[] weights, int[] values, int capacity) {
+        int n = weights.length;
+        int[][] dp = new int[n + 1][capacity + 1];
+
+        for (int i = 0; i <= n; i++) {
+            for (int w = 0; w <= capacity; w++) {
+                if (i == 0 || w == 0) {
+                    dp[i][w] = 0;
+                } else if (weights[i - 1] <= w) {
+                    dp[i][w] = Math.max(values[i - 1] + dp[i - 1][w - weights[i - 1]], dp[i - 1][w]);
+                } else {
+                    dp[i][w] = dp[i - 1][w];
+                }
+            }
+        }
+
+        return dp[n][capacity];
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the number of items: ");
+        int n = scanner.nextInt();
+        int[] weights = new int[n];
+        int[] values = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter the weight of item " + (i + 1) + ": ");
+            weights[i] = scanner.nextInt();
+            System.out.print("Enter the value of item " + (i + 1) + ": ");
+            values[i] = scanner.nextInt();
+        }
+
+        System.out.print("Enter the maximum capacity of the knapsack: ");
+        int capacity = scanner.nextInt();
+
+        scanner.close();
+
+        int maxValue = knapsack(weights, values, capacity);
+        System.out.println("Maximum value that can be obtained: " + maxValue);
+    }
+}
+
+/*
+
+"C:\Program Files\Java\jdk-18.0.2\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.2\lib\idea_rt.jar=57223:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.2\bin" -Dfile.encoding=UTF-8 -classpath E:\Practicals\out\production\Practicals KnapsackDynamicProgramming
+Enter the number of items: 3
+Enter the weight of item 1: 10
+Enter the value of item 1: 60
+Enter the weight of item 2: 20
+Enter the value of item 2: 100
+Enter the weight of item 3: 30
+Enter the value of item 3: 120
+Enter the maximum capacity of the knapsack: 50
+Maximum value that can be obtained: 220
+
+
+Time Complexity: O(N * W). As redundant calculations of states are avoided.
+Auxiliary Space: O(N * W) + O(N). 
+
+
+*/

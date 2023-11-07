@@ -1,0 +1,140 @@
+This Java program solves the 0/1 Knapsack problem using dynamic programming. It finds the maximum value that can be obtained by selecting items with given weights and values to fit within a knapsack of limited capacity. Here's an explanation of the code line by line:
+
+java
+
+import java.util.Scanner;
+
+    This line imports the Scanner class for user input.
+
+java
+
+public class KnapsackDynamicProgramming {
+
+    This line defines the main class named KnapsackDynamicProgramming.
+
+java
+
+public static int knapsack(int[] weights, int[] values, int capacity) {
+
+    This line defines a static method named knapsack, which takes three arguments: an array of weights, an array of values, and the maximum capacity of the knapsack. This method calculates and returns the maximum value that can be obtained.
+
+java
+
+int n = weights.length;
+
+    This line calculates the number of items (n) by taking the length of the weights array. Both the weights and values arrays are expected to have the same number of elements, each element corresponding to an item.
+
+java
+
+int[][] dp = new int[n + 1][capacity + 1];
+
+    This line creates a two-dimensional array dp to store the results of subproblems. It has dimensions (n+1) x (capacity+1) to represent the maximum value that can be obtained with different combinations of items and knapsack capacities.
+
+java
+
+for (int i = 0; i <= n; i++) {
+    for (int w = 0; w <= capacity; w++) {
+
+    These nested loops iterate through all possible combinations of items and knapsack capacities, considering all subproblems.
+
+java
+
+if (i == 0 || w == 0) {
+    dp[i][w] = 0;
+}
+
+    This conditional block initializes the values in the dp array for the base cases. When no items are selected (i == 0) or when the knapsack capacity is zero (w == 0), the maximum value is set to 0.
+
+java
+
+else if (weights[i - 1] <= w) {
+    dp[i][w] = Math.max(values[i - 1] + dp[i - 1][w - weights[i - 1]], dp[i - 1][w]);
+}
+
+    This block handles the case where the current item can be included in the knapsack (weights[i - 1] <= w). It calculates the maximum value by either including the current item and subtracting its weight or excluding the current item. The Math.max function is used to select the best option.
+
+java
+
+else {
+    dp[i][w] = dp[i - 1][w];
+}
+
+    If the current item cannot be included because its weight exceeds the remaining capacity, the maximum value remains the same as in the previous row of the dp array.
+
+java
+
+}
+}
+
+    The nested loops iterate through all subproblems.
+
+java
+
+return dp[n][capacity];
+
+    The method returns the maximum value that can be obtained, which is stored in dp[n][capacity].
+
+java
+
+}
+
+    The knapsack method is closed here.
+
+java
+
+public static void main(String[] args) {
+
+    This line defines the main method, which is the entry point of the program.
+
+java
+
+Scanner scanner = new Scanner(System.in);
+
+    This creates a Scanner object for reading input from the console.
+
+java
+
+System.out.print("Enter the number of items: ");
+int n = scanner.nextInt();
+int[] weights = new int[n];
+int[] values = new int[n];
+
+    These lines prompt the user to enter the number of items and create arrays for storing item weights and values based on the user's input.
+
+java
+
+for (int i = 0; i < n; i++) {
+
+    This loop allows the user to input the weight and value of each item.
+
+java
+
+System.out.print("Enter the weight of item " + (i + 1) + ": ");
+weights[i] = scanner.nextInt();
+System.out.print("Enter the value of item " + (i + 1) + ": ");
+values[i] = scanner.nextInt();
+
+    These lines prompt the user to input the weight and value of each item, which are stored in the respective arrays.
+
+java
+
+}
+
+    The loop for entering item details is closed here.
+
+java
+
+System.out.print("Enter the maximum capacity of the knapsack: ");
+int capacity = scanner.nextInt();
+scanner.close();
+
+    These lines prompt the user to enter the maximum capacity of the knapsack and read it into the capacity variable. The scanner is then closed to release resources.
+
+java
+
+int maxValue = knapsack(weights, values, capacity);
+System.out.println("Maximum value that can be obtained: " + maxValue);
+
+    These lines calculate the maximum value that can be obtained using the knapsack method and then print the result.
+
+The program allows the user to input item details and the capacity of the knapsack and then calculates and displays the maximum value that can be obtained using dynamic programming. The time complexity of the algorithm is O(N * W), where N is the number of items and W is the maximum capacity. The space complexity is O(N * W) for the dp array, and an additional O(N) for the item weights and values arrays.

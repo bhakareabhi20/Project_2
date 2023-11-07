@@ -1,0 +1,235 @@
+This Java program solves the classic "N-Queens" problem using a backtracking algorithm. The goal is to place N queens on an N×N chessboard in such a way that no two queens attack each other. The program takes the number of queens as input and then attempts to find a valid solution. Here's an explanation of the code line by line:
+
+java
+
+import java.util.Scanner;
+
+    These lines import the necessary classes, including Scanner for user input.
+
+java
+
+public class Queens {
+
+    This line defines the main class named Queens.
+
+java
+
+public static void main(String[] args) {
+
+    This line defines the main method, which is the entry point of the program.
+
+java
+
+Scanner sc = new Scanner(System.in);
+
+    This creates a Scanner object to read input from the console.
+
+java
+
+System.out.print("Enter the number of Queens : ");
+int n = sc.nextInt();
+
+    These lines prompt the user to enter the number of queens (N) and read it into the variable n.
+
+java
+
+int[][] board = new int[n][n];
+
+    This line creates a 2D array board representing the chessboard, with dimensions NxN. Initially, all cells are set to 0, indicating no queen is placed on the board.
+
+java
+
+if (solveNQueens(board, 0)) {
+
+    This conditional statement checks if a solution exists by calling the solveNQueens function with the initial state of the chessboard and the first column (col 0). If a solution is found, it proceeds to print the board.
+
+java
+
+printBoard(board);
+
+    This line calls the printBoard function to print the chessboard.
+
+java
+
+} else {
+    System.out.println("No solution exists.");
+}
+
+    If no solution is found, this part of the code is executed, and it prints "No solution exists."
+
+java
+
+}
+
+    The main method is closed here.
+
+java
+
+public static void printBoard(int[][] board) {
+
+    This line defines a function named printBoard to print the chessboard. It takes the board as input.
+
+java
+
+for (int[] row : board) {
+
+    This loop iterates through the rows of the chessboard.
+
+java
+
+for (int cell : row) {
+
+    This nested loop iterates through the cells in each row.
+
+java
+
+if (cell == 1) {
+    System.out.print("Q ");
+} else {
+    System.out.print("_ ");
+}
+
+    This conditional block prints "Q" if a queen is present in the cell (cell = 1), and "_" if it's empty.
+
+java
+
+}
+System.out.println();
+
+    This line is used to move to the next line after printing each row.
+
+java
+
+}
+
+    The loops for printing the chessboard are closed here.
+
+java
+
+}
+
+    The printBoard function is closed here.
+
+java
+
+public static boolean isSafe(int[][] board, int row, int col) {
+
+    This line defines a function named isSafe, which checks if it's safe to place a queen in a given cell on the chessboard. It takes the board, row, and col as inputs.
+
+java
+
+int i, j;
+
+    These variables i and j are used in the loops to check the safety of placing a queen.
+
+java
+
+// Check this row on the left side
+for (i = 0; i < col; i++) {
+    if (board[row][i] == 1) {
+        return false;
+    }
+}
+
+    This loop checks the left side of the row to ensure that there are no queens in that row up to the current column col.
+
+java
+
+// Check upper diagonal on the left side
+for (i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+    if (board[i][j] == 1) {
+        return false;
+    }
+}
+
+    This loop checks the upper left diagonal to ensure there are no queens attacking in that direction.
+
+java
+
+// Check lower diagonal on the left side
+for (i = row, j = col; i < board.length && j >= 0; i++, j--) {
+    if (board[i][j] == 1) {
+        return false;
+    }
+}
+
+    This loop checks the lower left diagonal to ensure there are no queens attacking in that direction.
+
+java
+
+return true;
+
+    If all safety checks pass, the function returns true, indicating that it's safe to place a queen in the given cell.
+
+java
+
+}
+
+    The isSafe function is closed here.
+
+java
+
+public static boolean solveNQueens(int[][] board, int col) {
+
+    This line defines the function solveNQueens, which is the primary backtracking algorithm to solve the N-Queens problem. It takes the board and the current column col as inputs.
+
+java
+
+if (col >= board.length) {
+    return true; // All queens are placed
+}
+
+    This conditional block checks if all queens have been successfully placed on the chessboard. If col exceeds the number of columns in the board, it returns true, indicating that all queens are placed.
+
+java
+
+for (int i = 0; i < board.length; i++) {
+
+    This loop iterates through all rows in the current column col to attempt to place a queen.
+
+java
+
+if (isSafe(board, i, col)) {
+
+    This conditional block checks if it's safe to place a queen in the current cell using the isSafe function.
+
+java
+
+board[i][col] = 1; // Place queen
+
+    If it's safe to place a queen, the cell is marked with 1 to indicate the presence of a queen.
+
+java
+
+if (solveNQueens(board, col + 1)) {
+    return true;
+}
+
+    This recursive call to solveNQueens attempts to place the next queen in the next column. If it returns true, indicating a successful placement, the function also returns true.
+
+java
+
+board[i][col] = 0; // If placing a queen at board[i][col] doesn't lead to a solution, backtrack
+
+    If placing a queen in the current cell does not lead to a solution, the cell is reset to 0 (empty), and the algorithm backtracks.
+
+java
+
+}
+}
+
+    The loop iterates through all rows, attempting to place queens in the current column.
+
+java
+
+return false;
+
+    If the loop completes without finding a solution for the current column, the function returns false.
+
+java
+
+}
+
+    The solveNQueens function is closed here.
+
+This program uses backtracking to solve the N-Queens problem and print a valid chessboard configuration if one exists. It checks for the safety of queen placements using the isSafe function and recursively explores different placements until a

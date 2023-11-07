@@ -1,0 +1,160 @@
+This Java program implements the Fractional Knapsack problem, where you have a set of items with weights and values, and you want to maximize the value of items that can be put into a knapsack with a limited capacity. Here's an explanation of the code line by line:
+
+java
+
+import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Comparator;
+
+    These lines import necessary classes, including Scanner for user input, Arrays for array manipulation, and Comparator to help sort items based on their value-to-weight ratios.
+
+java
+
+public class FractionalKnapSack {
+
+    This line defines the main class named FractionalKnapSack.
+
+java
+
+static class Item {
+    int weight, value;
+
+    Item(int weight, int value) {
+        this.weight = weight;
+        this.value = value;
+    }
+}
+
+    This inner class Item is used to represent the items in the knapsack. Each item has two properties: weight and value. The constructor initializes these properties when a new Item is created.
+
+java
+
+public static double getMaxValue(Item[] items, int capacity) {
+
+    This line defines a static method named getMaxValue, which calculates the maximum value that can be obtained from a set of items with a given capacity. It takes an array of Item objects and an integer capacity as arguments.
+
+java
+
+Arrays.sort(items, Comparator.comparingDouble(item -> -1.0 * item.value / item.weight));
+
+    This line sorts the items array based on the value-to-weight ratio in descending order. This means that items with a higher value-to-weight ratio will come first in the array.
+
+java
+
+double totalValue = 0.0;
+
+    This variable totalValue is used to keep track of the total value of items added to the knapsack.
+
+java
+
+for (Item item : items) {
+
+    This line starts a loop that iterates through the sorted items.
+
+java
+
+if (capacity <= 0) {
+    break;
+}
+
+    This conditional check breaks out of the loop if the capacity of the knapsack has been fully utilized.
+
+java
+
+int curWeight = Math.min(item.weight, capacity);
+
+    This line calculates the weight to be added to the knapsack for the current item. It takes the minimum of the item's weight and the remaining capacity to ensure that we don't exceed the capacity.
+
+java
+
+totalValue += curWeight * 1.0 * item.value / item.weight;
+
+    This line calculates the value to be added to the totalValue for the current item based on the proportion of the item's weight added to the knapsack.
+
+java
+
+capacity -= curWeight;
+
+    This line updates the remaining capacity of the knapsack after adding the current item.
+
+java
+
+}
+
+    The loop iterates through all items.
+
+java
+
+return totalValue;
+
+    The method returns the totalValue, which represents the maximum value that can be obtained for the given capacity.
+
+java
+
+}
+
+    The getMaxValue method is closed here.
+
+java
+
+public static void main(String[] args) {
+
+    This line defines the main method, which is the entry point of the program.
+
+java
+
+Scanner scanner = new Scanner(System.in);
+
+    This creates a Scanner object for reading input from the console.
+
+java
+
+System.out.print("Enter the number of items: ");
+int n = scanner.nextInt();
+
+    These lines prompt the user to enter the number of items and read it into the variable n.
+
+java
+
+Item[] items = new Item[n];
+
+    This creates an array of Item objects to store the item details entered by the user.
+
+java
+
+for (int i = 0; i < n; i++) {
+
+    This line starts a loop to input details for each item.
+
+java
+
+System.out.print("Enter the weight of item " + (i + 1) + ": ");
+int weight = scanner.nextInt();
+System.out.print("Enter the value of item " + (i + 1) + ": ");
+int value = scanner.nextInt();
+items[i] = new Item(weight, value);
+
+    These lines prompt the user to enter the weight and value of each item and store the information in the items array.
+
+java
+
+}
+
+    The loop for entering item details is closed here.
+
+java
+
+System.out.print("Enter the maximum capacity of the knapsack: ");
+int capacity = scanner.nextInt();
+scanner.close();
+
+    These lines prompt the user to enter the maximum capacity of the knapsack and read it into the capacity variable. The scanner is then closed to release resources.
+
+java
+
+double maxValue = getMaxValue(items, capacity);
+System.out.println("Maximum value that can be obtained: " + maxValue);
+
+    These lines calculate the maximum value that can be obtained using the getMaxValue method and then print the result.
+
+The program allows the user to input item details and the capacity of the knapsack, and it then calculates and displays the maximum value that can be obtained. The time complexity of the algorithm is O(n log n) due to the sorting step, and the space complexity is O(n) due to the storage of items.

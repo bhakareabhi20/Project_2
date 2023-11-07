@@ -1,0 +1,82 @@
+import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class FractionalKnapSack {
+    static class Item {
+        int weight, value;
+
+        Item(int weight, int value) {
+            this.weight = weight;
+            this.value = value;
+        }
+    }
+
+    public static double getMaxValue(Item[] items, int capacity) {
+        Arrays.sort(items, Comparator.comparingDouble(item -> -1.0 * item.value / item.weight));
+
+        double totalValue = 0.0;
+
+        for (Item item : items) {
+            if (capacity <= 0) {
+                break;
+            }
+
+            int curWeight = Math.min(item.weight, capacity);
+            totalValue += curWeight * 1.0 * item.value / item.weight;
+            capacity -= curWeight;
+        }
+
+        return totalValue;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the number of items: ");
+        int n = scanner.nextInt();
+        Item[] items = new Item[n];
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter the weight of item " + (i + 1) + ": ");
+            int weight = scanner.nextInt();
+            System.out.print("Enter the value of item " + (i + 1) + ": ");
+            int value = scanner.nextInt();
+            items[i] = new Item(weight, value);
+        }
+
+        System.out.print("Enter the maximum capacity of the knapsack: ");
+        int capacity = scanner.nextInt();
+        scanner.close();
+
+        double maxValue = getMaxValue(items, capacity);
+        System.out.println("Maximum value that can be obtained: " + maxValue);
+    }
+}
+
+/*
+
+"C:\Program Files\Java\jdk-18.0.2\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.2\lib\idea_rt.jar=58158:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.2\bin" -Dfile.encoding=UTF-8 -classpath E:\Practicals\out\production\Practicals FractionalKnapSack
+Enter the number of items: 3
+Enter the weight of item 1: 10
+Enter the value of item 1: 60
+Enter the weight of item 2: 20
+Enter the value of item 2: 100
+Enter the weight of item 3: 30
+Enter the value of item 3: 120
+Enter the maximum capacity of the knapsack: 50
+Maximum value that can be obtained: 240.0
+
+Process finished with exit code 0
+
+
+
+
+Time complexity is O(n log n) due to sorting.
+The space complexity is O(n) due to the storage of items.
+
+
+
+
+
+*/
